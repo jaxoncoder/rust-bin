@@ -1,4 +1,3 @@
-use glob::glob;
 use std::collections::HashMap;
 use std::fs;
 use std::io::{BufRead, BufReader, Write};
@@ -15,9 +14,14 @@ fn main() -> std::io::Result<()> {
     ]
     .iter()
     {
-        for path in glob(format!("{}/share/applications/*.desktop", dir).as_str())
+        for path in fs::read_dir(format!("{}/share/applications/", dir).as_str())
             .unwrap()
             .filter_map(Result::ok)
+            .map(|p| p.path())
+            .filter(|p| {
+                let ext = p.extension();
+                ext.is_some() && ext.unwrap() == "desktop"
+            })
         {
             let stem = path.file_stem().unwrap().to_str().unwrap().to_string();
 
