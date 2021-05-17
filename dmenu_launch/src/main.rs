@@ -18,9 +18,9 @@ fn main() -> std::io::Result<()> {
             .unwrap()
             .filter_map(Result::ok)
             .map(|p| p.path())
-            .filter(|p| {
-                let ext = p.extension();
-                ext.is_some() && ext.unwrap() == "desktop"
+            .filter(|p| match p.extension() {
+                Some(ext) => ext == "desktop",
+                None => false,
             })
         {
             let stem = path.file_stem().unwrap().to_str().unwrap().to_string();
