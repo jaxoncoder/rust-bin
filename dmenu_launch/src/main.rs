@@ -57,7 +57,7 @@ fn main() -> std::io::Result<()> {
     let mut out = BufReader::new(cmd.stdout.unwrap());
 
     let mut files = desktop_files.keys().map(|s| &**s).collect::<Vec<_>>();
-    files.sort();
+    files.sort_unstable();
 
     write!(cmd.stdin.unwrap(), "{}", files.join("\n")).unwrap();
 
